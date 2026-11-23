@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f4f4f6" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#101014" media="(prefers-color-scheme: dark)">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Sudoku">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <title>Sudoku</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <header>
+      <div class="title">
+        <h1>Sudoku</h1>
+        <div id="info" class="muted"></div>
+      </div>
+      <div class="actions">
+        <button id="btn-new" type="button">Nová hra</button>
+        <button id="btn-settings" type="button">Nastavení</button>
+      </div>
+    </header>
+
+    <div id="grid" role="grid" aria-label="Sudoku mřížka"></div>
+
+    <div id="status" class="status" role="status" aria-live="polite"></div>
+
+    <div id="tools">
+      <button id="btn-undo" type="button">Zpět</button>
+      <button id="btn-erase" type="button">Smazat</button>
+      <button id="btn-notes" type="button" aria-pressed="false">Poznámky</button>
+    </div>
+
+    <div id="pad" aria-label="Číslice"></div>
+  </div>
+
+  <div id="dlg-new" class="overlay" hidden>
+    <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="dlg-new-title">
+      <h2 id="dlg-new-title">Zahodit rozehranou hru?</h2>
+      <p>Aktuální rozehraná hra se ztratí.</p>
+      <div class="dialog-actions">
+        <button id="dlg-new-cancel" type="button">Zrušit</button>
+        <button id="dlg-new-ok" type="button" class="primary">Nová hra</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="dlg-win" class="overlay" hidden>
+    <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="dlg-win-title">
+      <h2 id="dlg-win-title">Hotovo</h2>
+      <p>Mřížka je správně vyplněná.</p>
+      <div class="dialog-actions">
+        <button id="dlg-win-ok" type="button" class="primary">Nová hra</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="dlg-settings" class="overlay" hidden>
+    <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="dlg-settings-title">
+      <h2 id="dlg-settings-title">Nastavení</h2>
+
+      <label class="row">
+        <input type="checkbox" id="set-limit">
+        <span>Omezit počet čísel v zadání</span>
+      </label>
+      <div class="row range-row">
+        <input type="range" id="set-target" min="24" max="60" step="1" value="30" aria-label="Cílový počet čísel">
+        <output id="set-target-out" for="set-target">30</output>
+      </div>
+      <p class="hint" id="set-limit-hint"></p>
+
+      <label class="row">
+        <input type="checkbox" id="set-conflicts">
+        <span>Označovat konflikty (duplicitní čísla)</span>
+      </label>
+      <p class="hint">Vyznačí čísla, která porušují pravidla řádku, sloupce nebo čtverce. Neprozradí, jestli je číslo správně.</p>
+
+      <p class="hint">Počet čísel se uplatní od další nové hry.</p>
+
+      <div class="dialog-actions">
+        <button id="dlg-settings-close" type="button" class="primary">Zavřít</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="sudoku.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

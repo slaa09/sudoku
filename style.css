@@ -1,0 +1,341 @@
+:root {
+  --bg: #f4f4f6;
+  --surface: #ffffff;
+  --text: #1b1b1f;
+  --muted: #6b6b76;
+  --line: #c9c9d1;
+  --line-strong: #2b2b33;
+  --given: #1b1b1f;
+  --entered: #1f5fd6;
+  --note: #6b6b76;
+  --peer: #e9eefb;
+  --same: #cfe0ff;
+  --sel: #a9c8ff;
+  --conflict: #d93025;
+  --conflict-bg: #fde3e1;
+  --btn: #e6e6ec;
+  --btn-active: #d3d3dc;
+  --accent: #1f5fd6;
+  --accent-text: #ffffff;
+  --overlay: rgba(0, 0, 0, 0.45);
+
+  /* strana mřížky: omezená šířkou i výškou obrazovky */
+  --grid: min(calc(100vw - 24px), 52vh, 460px);
+}
+
+@supports (height: 1dvh) {
+  :root {
+    --grid: min(calc(100vw - 24px), 52dvh, 460px);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #101014;
+    --surface: #1a1a20;
+    --text: #ececf1;
+    --muted: #9a9aa6;
+    --line: #3a3a45;
+    --line-strong: #c8c8d2;
+    --given: #ececf1;
+    --entered: #7fb0ff;
+    --note: #9a9aa6;
+    --peer: #23273a;
+    --same: #2a3d66;
+    --sel: #35599b;
+    --conflict: #ff6b60;
+    --conflict-bg: #4a2220;
+    --btn: #2a2a33;
+    --btn-active: #3a3a46;
+    --accent: #4d8dff;
+    --accent-text: #0b0b10;
+    --overlay: rgba(0, 0, 0, 0.65);
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  overscroll-behavior: none;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+#app {
+  width: var(--grid);
+  margin: 0 auto;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: max(env(safe-area-inset-top), 10px);
+  padding-bottom: max(env(safe-area-inset-bottom), 14px);
+}
+
+header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  line-height: 1.1;
+}
+
+.muted {
+  color: var(--muted);
+  font-size: 0.8rem;
+  min-height: 1em;
+}
+
+.actions {
+  display: flex;
+  gap: 6px;
+}
+
+button {
+  font: inherit;
+  color: var(--text);
+  background: var(--btn);
+  border: 0;
+  border-radius: 10px;
+  min-height: 44px;
+  padding: 0 14px;
+  cursor: pointer;
+}
+
+button:active {
+  background: var(--btn-active);
+}
+
+button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+button.primary {
+  background: var(--accent);
+  color: var(--accent-text);
+  font-weight: 600;
+}
+
+.actions button {
+  font-size: 0.9rem;
+  padding: 0 10px;
+}
+
+.status {
+  min-height: 1.2em;
+  font-size: 0.85rem;
+  color: var(--conflict);
+  text-align: center;
+}
+
+/* ---------- mřížka ---------- */
+
+#grid {
+  /* volné místo se dělí nad a pod mřížku: hlavička nahoře, ovládání u spodního okraje (dosah palce) */
+  margin-block: auto;
+  width: var(--grid);
+  height: var(--grid);
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  grid-template-rows: repeat(9, 1fr);
+  background: var(--surface);
+  border: 2px solid var(--line-strong);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.cell {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  font-size: calc(var(--grid) / 9 * 0.58);
+  line-height: 1;
+  color: var(--entered);
+  cursor: pointer;
+}
+
+.cell.c2,
+.cell.c5 {
+  border-right: 2px solid var(--line-strong);
+}
+
+.cell.r2,
+.cell.r5 {
+  border-bottom: 2px solid var(--line-strong);
+}
+
+.cell.c8 {
+  border-right: 0;
+}
+
+.cell.r8 {
+  border-bottom: 0;
+}
+
+.cell.given {
+  color: var(--given);
+  font-weight: 700;
+}
+
+.cell.peer {
+  background: var(--peer);
+}
+
+.cell.same {
+  background: var(--same);
+}
+
+.cell.selected {
+  background: var(--sel);
+}
+
+.cell.conflict {
+  color: var(--conflict);
+  background: var(--conflict-bg);
+}
+
+.cell .val {
+  position: relative;
+}
+
+.cell .notes {
+  position: absolute;
+  inset: 0;
+  display: none;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  font-size: calc(var(--grid) / 9 * 0.27);
+  color: var(--note);
+  pointer-events: none;
+}
+
+.cell.has-notes .notes {
+  display: grid;
+}
+
+.cell .notes span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ---------- ovládání ---------- */
+
+#tools {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+#btn-notes[aria-pressed="true"] {
+  background: var(--accent);
+  color: var(--accent-text);
+  font-weight: 600;
+}
+
+#pad {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  gap: 4px;
+}
+
+#pad button {
+  min-height: 56px;
+  padding: 0;
+  font-size: 1.5rem;
+  font-weight: 500;
+  border-radius: 8px;
+}
+
+/* ---------- dialogy ---------- */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--overlay);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 10;
+}
+
+.overlay[hidden] {
+  display: none;
+}
+
+.dialog {
+  background: var(--surface);
+  color: var(--text);
+  border-radius: 16px;
+  padding: 20px;
+  width: min(100%, 360px);
+  max-height: 100%;
+  overflow: auto;
+}
+
+.dialog h2 {
+  margin: 0 0 8px;
+  font-size: 1.2rem;
+}
+
+.dialog p {
+  margin: 0 0 12px;
+}
+
+.dialog .hint {
+  color: var(--muted);
+  font-size: 0.8rem;
+  margin: 4px 0 14px;
+}
+
+.dialog .row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 36px;
+}
+
+.dialog .row input[type="checkbox"] {
+  width: 22px;
+  height: 22px;
+  flex: none;
+}
+
+.dialog .range-row input[type="range"] {
+  flex: 1;
+}
+
+.dialog .range-row output {
+  width: 2.2em;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 8px;
+}

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- Plnoplošné pozadí; obsah (mřížka 300×300) leží uvnitř bezpečné zóny 80 % pro maskable ikony. -->
+  <rect width="512" height="512" fill="#1f5fd6"/>
+  <g fill="#ffffff" fill-opacity="0.22">
+    <rect x="210" y="106" width="92" height="92" rx="16"/>
+    <rect x="106" y="210" width="92" height="92" rx="16"/>
+    <rect x="314" y="210" width="92" height="92" rx="16"/>
+    <rect x="210" y="314" width="92" height="92" rx="16"/>
+  </g>
+  <g fill="#ffffff">
+    <rect x="106" y="106" width="92" height="92" rx="16"/>
+    <rect x="314" y="106" width="92" height="92" rx="16"/>
+    <rect x="210" y="210" width="92" height="92" rx="16"/>
+    <rect x="106" y="314" width="92" height="92" rx="16"/>
+    <rect x="314" y="314" width="92" height="92" rx="16"/>
+  </g>
+  <g fill="#1f5fd6" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-weight="800" font-size="68" text-anchor="middle">
+    <text x="152" y="175">3</text>
+    <text x="360" y="175">7</text>
+    <text x="256" y="279">5</text>
+    <text x="152" y="383">9</text>
+    <text x="360" y="383">1</text>
+  </g>
+</svg>
